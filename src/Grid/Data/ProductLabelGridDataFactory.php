@@ -21,15 +21,16 @@ class ProductLabelGridDataFactory implements GridDataFactoryInterface
 
     public function getData(SearchCriteriaInterface $searchCriteria)
     {
+        /** @var ProductLabel[] $labels */
         $labels = $this->em->getRepository(ProductLabel::class)->findAll();
 
         $records = [];
         foreach ($labels as $label) {
             $records[] = [
-                'id' => $label->id,
-                'name' => $label->name,
-                'color' => $label->color,
-                'visible' => $label->visible ? 'Yes' : 'No',
+                'id' => $label->getId(),
+                'name' => $label->getName(),
+                'color' => $label->getColor(),
+                'visible' => $label->getVisible() ? 'Yes' : 'No',
             ];
         }
 

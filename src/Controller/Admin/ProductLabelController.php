@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\ProductLabel\Controller\Admin;
 
+use PrestaShop\Module\ProductLabel\Entity\ProductLabel;
+use PrestaShop\Module\ProductLabel\Form\ProductLabelType;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use PrestaShop\PrestaShop\Core\Grid\GridFactoryInterface;
 use PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteria;
+
 
 class ProductLabelController extends FrameworkBundleAdminController
 {
@@ -27,10 +30,25 @@ class ProductLabelController extends FrameworkBundleAdminController
         ]);
     }
 
-    public function edit(int $id, Request $request): Response
+    public function edit(ProductLabel $label, Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(ProductLabelType::class, $label);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($label);
+            $em->flush();
+    
+            $this->addFlash('success', 'Label saved.');
+    
+            return $this->redirectToRoute('admin_product_label_edit', ['id' => $label->getId()]);
+        }
+    
         return $this->render('@Modules/productlabel/views/templates/admin/label/edit.html.twig', [
-            'message' => 'Label admin edit works!',
+            'label' => $label,
+            'form' => $form->createView()
         ]);
     }
 }

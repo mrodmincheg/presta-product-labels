@@ -10,6 +10,9 @@ services:
         resource: "../src/*"
         exclude: "../src/{Entity,Migrations,Tests}"
 
+    PrestaShop\Module\ProductLabel\Validator\Constraints\ValidHexColorValidator:
+        tags: ['validator.constraint_validator']
+
     # Grid Definition
     productlabel.grid.product_label_definition_factory:
         class: PrestaShop\Module\ProductLabel\Grid\Definition\Factory\ProductLabelGridDefinitionFactory
