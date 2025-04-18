@@ -1,0 +1,12 @@
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ 'Product Labels'|trans({}, 'Modules.Productlabel.Admin') }}</h3>
+    </div>
+    <div class="card-body">
+     {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': grid} %}
+    </div>
+  </div>
+{% endblock %}

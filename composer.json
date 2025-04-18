@@ -1,0 +1,24 @@
+{
+    "name": "test/product-label",
+    "description": "PrestaShop - Product label",
+    "license": "AFL-3.0",
+    "authors": [
+      {
+        "name": "Test"
+      }
+    ],
+    "autoload": {
+      "psr-4": {
+        "PrestaShop\\Module\\ProductLabel\\": "src/"
+      }
+    },
+    "require": {
+      "php": ">=8.1.0"
+    },
+    "config": {
+      "preferred-install": "dist",
+      "prepend-autoloader": false
+    },
+    "type": "prestashop-module"
+  }
+  

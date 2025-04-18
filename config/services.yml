@@ -1,0 +1,34 @@
+services:
+    _defaults:
+        public: true
+
+    PrestaShop\Module\ProductLabel\Controller\Admin\ProductLabelController:
+        public: true
+        tags: ["controller.service_arguments"]
+
+    PrestaShop\Module\ProductLabel\:
+        resource: "../src/*"
+        exclude: "../src/{Entity,Migrations,Tests}"
+
+    # Grid Definition
+    productlabel.grid.product_label_definition_factory:
+        class: PrestaShop\Module\ProductLabel\Grid\Definition\Factory\ProductLabelGridDefinitionFactory
+        parent: "prestashop.core.grid.definition.factory.abstract_grid_definition"
+        public: true
+
+    # Grid Data
+    productlabel.grid.product_label_data_factory:
+        class: PrestaShop\Module\ProductLabel\Grid\Data\ProductLabelGridDataFactory
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        public: true
+
+    # Grid Factory
+    productlabel.grid.product_label_grid_factory:
+        class: PrestaShop\PrestaShop\Core\Grid\GridFactory
+        arguments:
+            - "@productlabel.grid.product_label_definition_factory"
+            - "@productlabel.grid.product_label_data_factory"
+            - "@prestashop.core.grid.filter.form_factory"
+            - "@prestashop.core.hook.dispatcher"
+        public: true
