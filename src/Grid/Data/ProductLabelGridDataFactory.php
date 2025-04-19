@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PrestaShop\Module\ProductLabel\Grid\Data;
 
 use PrestaShop\PrestaShop\Core\Grid\Data\Factory\GridDataFactoryInterface;

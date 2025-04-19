@@ -3,8 +3,10 @@
 namespace PrestaShop\Module\ProductLabel\Form;
 
 use PrestaShop\Module\ProductLabel\Entity\ProductLabel;
+use PrestaShop\Module\ProductLabel\Entity\ProductReference;
 use PrestaShop\Module\ProductLabel\Validator\Constraints\ValidHexColor;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -35,6 +37,17 @@ class ProductLabelType extends AbstractType
             ->add('visible', SwitchType::class, [
                 'label' => 'Visible',
                 'required' => false,
+            ])
+            ->add('products', EntityType::class, [
+                'class' => ProductReference::class,
+                'choice_label' => 'reference',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Assigned Products',
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control', // Optional: JS-enhanced multi-select
+                ],
             ]);
     }
 

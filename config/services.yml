@@ -11,22 +11,29 @@ services:
         exclude: "../src/{Entity,Migrations,Tests}"
 
     PrestaShop\Module\ProductLabel\Validator\Constraints\ValidHexColorValidator:
-        tags: ['validator.constraint_validator']
+        tags: ["validator.constraint_validator"]
 
-    # Grid Definition
+    PrestaShop\Module\ProductLabel\Form\Modifier\ProductFormModifier:
+        autowire: true
+        public: true
+        arguments:
+            $formBuilderModifier: "@form.form_builder_modifier"
+
+    PrestaShop\Module\ProductLabel\Repository\ProductLabelRepository:
+        autowire: true
+        autoconfigure: true
+
     productlabel.grid.product_label_definition_factory:
         class: PrestaShop\Module\ProductLabel\Grid\Definition\Factory\ProductLabelGridDefinitionFactory
         parent: "prestashop.core.grid.definition.factory.abstract_grid_definition"
         public: true
 
-    # Grid Data
     productlabel.grid.product_label_data_factory:
         class: PrestaShop\Module\ProductLabel\Grid\Data\ProductLabelGridDataFactory
         arguments:
             - "@doctrine.orm.entity_manager"
         public: true
 
-    # Grid Factory
     productlabel.grid.product_label_grid_factory:
         class: PrestaShop\PrestaShop\Core\Grid\GridFactory
         arguments:

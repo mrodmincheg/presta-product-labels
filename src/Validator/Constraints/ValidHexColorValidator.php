@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PrestaShop\Module\ProductLabel\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;

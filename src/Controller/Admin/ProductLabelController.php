@@ -23,16 +23,29 @@ class ProductLabelController extends FrameworkBundleAdminController
         $grid = $gridFactory->getGrid(new SearchCriteria());
         $gridView = $this->presentGrid($grid);
 
+        $toolbarButtons = [
+            'add' => [
+                'href' => $this->generateUrl('admin_product_label_create'),
+                'desc' => $this->trans('Add new label', 'Admin.Actions', []),
+                'icon' => 'add_circle',
+            ],
+        ];
+
 
         return $this->render('@Modules/productlabel/views/templates/admin/label/index.html.twig', [
             'message' => 'Label admin works!',
             'grid' => $gridView,
+            'layoutHeaderToolbarBtn' => $toolbarButtons
         ]);
     }
 
-    public function edit(ProductLabel $label, Request $request): Response
+    public function edit(Request $request, ?int $id = null): Response
     {
         $em = $this->getDoctrine()->getManager();
+
+        $label = $id
+            ? $em->getRepository(ProductLabel::class)->find($id)
+            : new ProductLabel();
 
         $form = $this->createForm(ProductLabelType::class, $label);
 

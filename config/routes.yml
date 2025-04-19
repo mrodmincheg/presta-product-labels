@@ -1,15 +1,20 @@
 product_label_admin:
-  path: /admin/product-labels
-  methods: [GET]
-  defaults:
-    _controller: 'PrestaShop\Module\ProductLabel\Controller\Admin\ProductLabelController::index'
-    _legacy_controller: 'AdminProductLabel'
-    _legacy_link: 'AdminProductLabel'
+    path: /admin/product-labels
+    methods: [GET]
+    defaults:
+        _controller: 'PrestaShop\Module\ProductLabel\Controller\Admin\ProductLabelController::index'
+        _legacy_controller: "AdminProductLabel"
+        _legacy_link: "AdminProductLabel"
 
 admin_product_label_edit:
-  path: /admin/product-labels/{id}/edit
-  methods: [GET, POST]
-  defaults:
-    _controller: 'PrestaShop\Module\ProductLabel\Controller\Admin\ProductLabelController::edit'
-    _legacy_controller: 'AdminProductLabel'
-    _legacy_link: 'AdminProductLabel'
+    path: /admin/product-labels/{id}/edit
+    methods: [GET, POST]
+    defaults:
+        _controller: 'PrestaShop\Module\ProductLabel\Controller\Admin\ProductLabelController::edit'
+        _legacy_controller: "AdminProductLabel"
+        _legacy_link: "AdminProductLabel"
+
+admin_product_label_create:
+    path: /admin/product-labels/new
+    defaults:
+        _controller: 'PrestaShop\Module\ProductLabel\Controller\Admin\ProductLabelController::edit'

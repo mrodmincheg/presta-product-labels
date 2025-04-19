@@ -3,6 +3,9 @@
 namespace PrestaShop\Module\ProductLabel\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use PrestaShop\Module\ProductLabel\Entity\ProductReference;
 
 /**
  * @ORM\Entity
@@ -33,8 +36,23 @@ class ProductLabel
     private $visible;
 
     /**
+     * @ORM\ManyToMany(targetEntity=ProductReference::class)
+     * @ORM\JoinTable(
+     *     name="product_label_product",
+     *     joinColumns={@ORM\JoinColumn(name="label_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id_product")}
+     * )
+     */
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
+    /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -44,7 +62,7 @@ class ProductLabel
      * Set the value of id
      *
      * @return  self
-     */ 
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -54,7 +72,7 @@ class ProductLabel
 
     /**
      * Get the value of name
-     */ 
+     */
     public function getName()
     {
         return $this->name;
@@ -64,7 +82,7 @@ class ProductLabel
      * Set the value of name
      *
      * @return  self
-     */ 
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -74,7 +92,7 @@ class ProductLabel
 
     /**
      * Get the value of color
-     */ 
+     */
     public function getColor()
     {
         return $this->color;
@@ -84,7 +102,7 @@ class ProductLabel
      * Set the value of color
      *
      * @return  self
-     */ 
+     */
     public function setColor($color)
     {
         $this->color = $color;
@@ -94,7 +112,7 @@ class ProductLabel
 
     /**
      * Get the value of visible
-     */ 
+     */
     public function getVisible()
     {
         return $this->visible;
@@ -104,11 +122,30 @@ class ProductLabel
      * Set the value of visible
      *
      * @return  self
-     */ 
+     */
     public function setVisible($visible)
     {
         $this->visible = $visible;
 
+        return $this;
+    }
+
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(ProductReference $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
+        return $this;
+    }
+
+    public function removeProduct(ProductReference $product): self
+    {
+        $this->products->removeElement($product);
         return $this;
     }
 }

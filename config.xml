@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>productlabel</name>
+    <displayName><![CDATA[Product Custom Labels]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[Add and manage custom labels for products.]]></description>
+    <author><![CDATA[Test Task]]></author>
+    <tab><![CDATA[]]></tab>
+    <is_configurable>0</is_configurable>
+    <need_instance>0</need_instance>
+</module>
