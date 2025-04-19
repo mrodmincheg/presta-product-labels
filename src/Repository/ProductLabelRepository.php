@@ -25,4 +25,13 @@ class ProductLabelRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function finaAllWithProducts(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.products', 'p')
+            ->addSelect('p')
+            ->getQuery()
+            ->getResult();
+    }
 }

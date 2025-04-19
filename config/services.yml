@@ -18,10 +18,21 @@ services:
         public: true
         arguments:
             $formBuilderModifier: "@form.form_builder_modifier"
+            $labelChoice: '@PrestaShop\Module\ProductLabel\Form\LabelChoice'
 
     PrestaShop\Module\ProductLabel\Repository\ProductLabelRepository:
         autowire: true
         autoconfigure: true
+        tags:
+            - { name: doctrine.repository_service }
+
+    # PrestaShop\Module\ProductLabel\Repository\ProductLabelRepository:
+    #     class: PrestaShop\Module\ProductLabel\Repository\ProductLabelRepository
+    #     arguments:
+    #     - '@doctrine'
+    #     tags:
+    #     - { name: doctrine.repository_service }
+
 
     productlabel.grid.product_label_definition_factory:
         class: PrestaShop\Module\ProductLabel\Grid\Definition\Factory\ProductLabelGridDefinitionFactory

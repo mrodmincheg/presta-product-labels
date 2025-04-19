@@ -6,9 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PrestaShop\Module\ProductLabel\Entity\ProductReference;
+use PrestaShop\Module\ProductLabel\Repository\ProductLabelRepository;
 
 /**
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass=ProductLabelRepository::class)
  * @ORM\Table(name="product_label")
  */
 class ProductLabel
@@ -31,7 +33,7 @@ class ProductLabel
     private $color;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $visible;
 
