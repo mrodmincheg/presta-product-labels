@@ -33,7 +33,6 @@ class ProductLabelController extends FrameworkBundleAdminController
 
 
         return $this->render('@Modules/productlabel/views/templates/admin/label/index.html.twig', [
-            'message' => 'Label admin works!',
             'grid' => $gridView,
             'layoutHeaderToolbarBtn' => $toolbarButtons
         ]);

@@ -6,10 +6,12 @@ use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 use PrestaShopBundle\Entity\Repository\TabRepository;
 use PrestaShop\Module\ProductLabel\Form\Modifier\ProductFormModifier;
 use PrestaShop\Module\ProductLabel\Entity\ProductLabel as LabelEntity;
+use PrestaShop\Module\ProductLabel\Service\LabelsFrontProvider;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
 class ProductLabel extends Module implements WidgetInterface
 {
+    protected array $displayedProducts = [];
 
     public function __construct()
     {
@@ -33,7 +35,7 @@ class ProductLabel extends Module implements WidgetInterface
             $this->registerHook('displayProductExtraContent') &&
             $this->registerHook(['actionProductFormBuilderModifier']) &&
             $this->registerHook(['actionAfterUpdateProductFormHandler']) &&
-            $this->registerHook(['displayAfterProductThumbs']) &&
+            $this->registerHook(['displayAfterProductThumbs', 'displayProductPriceBlock']) &&
             $this->registerHook('header') &&
             $this->installTab();
     }
@@ -44,19 +46,13 @@ class ProductLabel extends Module implements WidgetInterface
             return;
         }
 
-        $entityManager = $this->get('doctrine.orm.default_entity_manager');
-        $dql = '
-            SELECT l
-            FROM PrestaShop\Module\ProductLabel\Entity\ProductLabel l
-            JOIN l.products p
-            WHERE p.id = :productId
-            AND l.visible = true
-        ';
+        if (!isset($params['product']['id_product'])) {
+            return;
+        }
 
-        $query = $entityManager->createQuery($dql);
-        $query->setParameter('productId', 1);
+        $productId = $params['product']['id_product'];
 
-        $labels = $query->getResult();
+        $labels = $this->getLabelsForProduct($productId);
 
         $moveToTitle = 0;
         if (Configuration::get('PRODUCTLABEL_POSITION') == 'above_title') {
@@ -69,6 +65,43 @@ class ProductLabel extends Module implements WidgetInterface
         ]);
 
         return $this->fetch('module:productlabel/views/templates/hook/product-labels.tpl');
+    }
+
+    public function hookDisplayProductPriceBlock($params)
+    {
+        if(!Configuration::get('PRODUCTLABEL_ENABLED')) {
+            return;
+        }
+
+        if (!isset($params['product']['id_product'])) {
+            return;
+        }
+
+        $productId = $params['product']['id_product'];
+
+        if (in_array($productId, $this->displayedProducts)) {
+            return;
+        }
+
+        $labels = $this->getLabelsForProduct($productId);
+
+        $this->context->smarty->assign([
+            'labels' => $labels
+        ]);
+
+        $this->displayedProducts[] = $productId;
+
+
+        return $this->fetch('module:productlabel/views/templates/hook/product-labels-plp.tpl');
+    }
+
+    protected function getLabelsForProduct(int $productId)
+    {
+        $entityManager = $this->get('doctrine.orm.default_entity_manager');
+
+        $labelsProvider = new LabelsFrontProvider($entityManager);
+
+        return $labelsProvider->getLabelsForProduct($productId);
     }
 
 
